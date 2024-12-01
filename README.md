@@ -1,7 +1,7 @@
 # nixos-config
 
 ## Setup 
-Take a generated hardware-configuration.nix and modify it to import modules as shown in the example pergola.nix. 
+Take a generated hardware-configuration.nix and modify it to import modules as shown in the example `hosts/pergola.nix`. 
 
 Add an entry to flake.nix for the new host.
 
