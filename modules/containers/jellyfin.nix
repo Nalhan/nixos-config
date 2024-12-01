@@ -21,7 +21,7 @@
         #"/path/to/tvseries:/data/tvshows"
         #"/path/to/movies:/data/movies"
       ];
-      restartPolicy = "unless-stopped";
+      #restartPolicy = "unless-stopped"; this is not real
     };
   };
 }
