@@ -1,4 +1,4 @@
-# media.nix
+# pergola.nix
 # machine specific configuration goes here (services, hardware, etc.)
 
 { config, lib, pkgs, modulesPath, ... }:
@@ -8,10 +8,12 @@
     [ (modulesPath + "/profiles/qemu-guest.nix")
       ../configuration.nix
       ../users/pergola.nix
+      ../modules/containers/containers.nix
+      ../modules/containers/jellyfin.nix
          
     ];
 
-
+  
 
 
 
