@@ -6,6 +6,9 @@
     vimAlias = true;
     colorschemes.oxocarbon.enable = true;
 
+    include = [
+      ./keymaps.nix
+    ];
 
     globalOpts = {
       number = true;
