@@ -6,6 +6,7 @@
 
 {
   # Set your time zone.
+  nixpkgs.config.allowUnfree = true;
   time.timeZone = "America/Los_Angeles";
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -63,6 +64,8 @@
     htop
     nnn
     usbutils
+    _1password-cli
+
   ];
 
   # Enable direnv

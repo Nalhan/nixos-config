@@ -7,7 +7,7 @@
     ./nvim.nix
   ];
 
-#packages
+#packagets
 #  programs.neovim = {
 #    enable = true;
 #    viAlias = true;
@@ -34,7 +34,7 @@
 #        set expandtab
 #   '';
 #  };
-  
+  programs.gh.enable = true;  
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -50,4 +50,6 @@
       ls = "ls -al";
     };
   };
+
+  #programs._1password-cli.enable = true;
 }
