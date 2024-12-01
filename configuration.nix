@@ -5,18 +5,12 @@
 { config, lib, pkgs, ... }:
 
 {
-  # Set your time zone.
-  nixpkgs.config.allowUnfree = true;
-  time.timeZone = "America/Los_Angeles";
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
-  programs.nix-ld.enable = true;
+  nixpkgs.config.allowUnfree = true;
+
+  time.timeZone = "America/Los_Angeles";
+  
+  #programs.nix-ld.enable = true;
 
   services.openssh = {
     enable = true;
@@ -50,10 +44,10 @@
   ];
 
   # Enable direnv
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
+  # programs.direnv = {
+    # enable = true;
+    # nix-direnv.enable = true;
+  # };
 
   # Set Zsh as the default shell system-wide
   users.defaultUserShell = pkgs.zsh;
