@@ -7,34 +7,8 @@
     ./nvim/nvim.nix
   ];
 
-#packagets
-#  programs.neovim = {
-#    enable = true;
-#    viAlias = true;
-#    vimAlias = true;
-#    plugins = with pkgs.vimPlugins; [
-#      nvim-lspconfig
-#      vim-nix
-#      luasnip
-#      nvim-cmp
-#      cmp_luasnip
-#      cmp-nvim-lsp
-#      fidget-nvim
-#      nvim-treesitter.withAllGrammars
-#      plenary-nvim
-#      nightfox-nvim
-#      auto-session
-#      mini-nvim
-#    ];
-#    extraConfig = ''        
-#        luafile ${./nvim.lua}
-#        set number
-#        set tabstop=2
-#        set shiftwidth=2
-#        set expandtab
-#   '';
-#  };
-  programs.gh.enable = true;  
+  programs.gh.enable = true; 
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
