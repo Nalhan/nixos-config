@@ -6,7 +6,7 @@
     vimAlias = true;
     colorschemes.oxocarbon.enable = true;
 
-    include = [
+    imports = [
       ./keymaps.nix
     ];
 
