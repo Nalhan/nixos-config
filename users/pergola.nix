@@ -11,7 +11,7 @@
   };
   home-manager = {
     users.pergola = {
-      imports = [ ./home.nix ];
+      imports = [ ../home/home.nix ];
       programs.git = {
         enable = true;
         userName = "Nathan Park";

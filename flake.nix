@@ -31,7 +31,7 @@
         nixosConfigurations = {
           pergola = nixpkgs.lib.nixosSystem {
             specialArgs = specialArgs;
-	          system = system;
+	    system = system;
             modules = shared-modules ++ [ ./hosts/pergola.nix ];
           };
         };
