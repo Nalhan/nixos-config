@@ -17,7 +17,7 @@
         #JELLYFIN_PublishedServerUrl = "http://192.168.0.5"; # optional
       };
       volumes = [
-        #"/path/to/jellyfin/library:/config"
+        "/etc/nixos/modules/containers/jellyfin/config:/config"
         #"/path/to/tvseries:/data/tvshows"
         #"/path/to/movies:/data/movies"
       ];

@@ -9,7 +9,7 @@
       ../configuration.nix
       ../users/pergola.nix
       ../modules/containers/containers.nix
-      ../modules/containers/jellyfin.nix
+      ../modules/containers/jellyfin/jellyfin.nix
          
     ];
 
