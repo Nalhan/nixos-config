@@ -7,6 +7,7 @@
       "esphome"
       "wled"
     ];
+    configDir = "/etc/nixos/modules/homeassistant";
     config = {
       default_config = {};
     };
