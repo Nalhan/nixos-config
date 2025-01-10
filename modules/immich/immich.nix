@@ -5,4 +5,6 @@
     port = 2283;
   };
 
+  networking.firewall.allowedTCPPorts = [ 2283 ];
+
 }
