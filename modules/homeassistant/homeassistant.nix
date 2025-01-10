@@ -8,6 +8,9 @@
       "met"
       "radio_browser"
       "wled"
+      "zwave_js"
+      "matter"
+      "zha"
     ];
  configDir = "/etc/nixos/modules/homeassistant/config";
     config = {
