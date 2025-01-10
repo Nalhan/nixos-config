@@ -7,23 +7,31 @@
     ./nvim/nvim.nix
   ];
 
-  programs.gh.enable = true; 
+  programs = {
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    
-    oh-my-zsh = {
+
+    gh.enable = true; 
+  
+    eza = {
       enable = true;
-      plugins = [ "git" "1password" ];
-      theme = "robbyrussell";
+      enableZshIntegration = true;
     };
-    shellAliases = {
-      ls = "ls -al";
+
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      
+      oh-my-zsh = {
+        enable = true;
+        plugins = [ "git" "1password" ];
+        theme = "robbyrussell";
+      };
+      shellAliases = {
+        ls = "eza -al";
+      };
     };
   };
-
   #programs._1password-cli.enable = true;
 }
