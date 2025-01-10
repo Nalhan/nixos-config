@@ -15,6 +15,8 @@
  configDir = "/etc/nixos/modules/homeassistant/config";
     config = {
       default_config = {};
+      "automation manual" = [ ];
+      "automation ui" = "!include automations.yaml";
     };
   };
 
