@@ -10,4 +10,8 @@
       default_config = {};
     };
   };
+
+  #make this port available
+  networking.firewall.allowedTCPPorts = [ 8123 ];
+
 }
