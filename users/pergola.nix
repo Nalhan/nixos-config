@@ -6,7 +6,7 @@
 
   users.users.pergola = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "hass"];
     shell = pkgs.zsh;
   };
   home-manager = {
