@@ -5,9 +5,11 @@
     enable = true;
     extraComponents = [
       "esphome"
+      "met"
+      "radio_browser"
       "wled"
     ];
-    configDir = "/etc/nixos/modules/homeassistant/config";
+ configDir = "/etc/nixos/modules/homeassistant/config";
     config = {
       default_config = {};
     };
