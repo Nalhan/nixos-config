@@ -5,6 +5,7 @@
     enable = true;
     extraComponents = [
       "esphome"
+      "wled"
     ];
     config = {
       default_config = {};
