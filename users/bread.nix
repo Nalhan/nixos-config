@@ -14,7 +14,10 @@
     };
   home-manager = {
     users.bread = {
-      imports = [ ../home/home.nix ];
+      imports = [ 
+	../home/home.nix 
+	../home/hyprland.nix
+      ];
       programs.zsh = {
         enable = true;
       };
@@ -23,9 +26,16 @@
 	userName = "Nathan Park";
 	userEmail = "nalhan.park@gmail.com";
       };
-      programs.firefox.enable = true;
-      programs.kitty.enable = true;
+      
+
+
+      #programs.firefox.enable = true;
+      #programs.kitty.enable = true;
+      #programs.fuzzel.enable = true;
+      #wayland.windowManager.hyprland.enable = true; #enable it here, config is in the home directory
+
       home.stateVersion = "24.11";
+
     };
   };
 }
