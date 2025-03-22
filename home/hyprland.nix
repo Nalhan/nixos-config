@@ -58,10 +58,11 @@
 
     
       bindm = 
-      [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-        ]
+        [
+          "$mod, mouse:272, movewindow"
+          "$mod, mouse:273, resizewindow"
+        ];
+
       };
     extraConfig = "
            monitor = , preferred, auto, auto
