@@ -23,7 +23,8 @@
 	userName = "Nathan Park";
 	userEmail = "nalhan.park@gmail.com";
       };
-      #programs.firefox.enable = true;
+      programs.firefox.enable = true;
+      programs.kitty.enable = true;
       home.stateVersion = "24.11";
     };
   };

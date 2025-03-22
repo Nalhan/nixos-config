@@ -37,7 +37,7 @@
           breadbox = nixpkgs.lib.nixosSystem {
             specialArgs = specialArgs;
             system = system;
-            modules = shared-modules ++ [ ./hosts/pergola.nix ];
+            modules = shared-modules ++ [ ./hosts/breadbox.nix ];
           };
         };
 

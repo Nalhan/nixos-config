@@ -11,7 +11,7 @@
       ../modules/containers/containers.nix
       ../modules/containers/jellyfin.nix
       ../modules/homeassistant/homeassistant.nix
-      ../modules/immich/immich.nix
+#      ../modules/immich/immich.nix
     ];
 
   ########
