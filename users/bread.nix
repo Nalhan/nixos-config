@@ -9,7 +9,7 @@
     isNormalUser = true;
     initialPassword = "bread";
     description = "Bread";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "audio"];
     shell = pkgs.zsh;
     };
   home-manager = {

@@ -84,6 +84,17 @@
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   
 
+
+  #########
+  # SOUND #
+  #########
+
+  sound.enable = true;
+  hardware.pulseaudio = {
+    enable = true;
+    support32Bit = true;
+  };
+
   ############
   # PROGRAMS #
   ############
