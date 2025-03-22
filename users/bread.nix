@@ -33,7 +33,15 @@
       #programs.kitty.enable = true;
       #programs.fuzzel.enable = true;
       #wayland.windowManager.hyprland.enable = true; #enable it here, config is in the home directory
-
+      #programs.plexamp.enable = true;
+      #programs._1password.enable = true;
+      # programs._1password-gui = {
+	# enable = true;
+	# polkitPolicyOwners = [ "bread" ];
+      # };
+      #programs.steam.enable = true;
+      #programs.vencord.enable = true;
+     # programs.obs_studio.enable = true;
       home.stateVersion = "24.11";
 
     };

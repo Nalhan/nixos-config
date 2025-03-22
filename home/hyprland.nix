@@ -15,17 +15,29 @@
       "$fileManger" = "dolphin";
       "$menu" = "fuzzel";
       
-      monitor = [
-        ", preferred, auto, auto"
-        "DP-1, 1920x1200, 0x0, 1, transform, 1"
-      ];
+      # monitor = [
+        # ", preferred, auto, auto"
+        # "DP-1, 1920x1200, 0x0, 1, transform, 1"
+      # ];
 
       bind =
         [
           "$mod, Q, exec, $terminal"
           "$mod, SPACE, exec, $menu"
           "$mod, F, exec, firefox"
+          "$mod, C, killactive"
+          "$mod, M, exit"
+          "$mod, V, togglefloating"
+          "$mod, J, togglesplit"
+          "$mod, P, pseudo"
+
+          "$mod, left, movefocus, l"
+          "$mod, right, movefocus, r"
+          "$mod, up, movefocus, u"
+          "$mod, down, movefocus, d"
+          
         ]
+
         ++ (
           # workspaces
           # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
@@ -38,10 +50,15 @@
             )
             9)
             );
-          };
-      #    extraConfig = "
-       #     monitor = , preferred, auto, auto
-#            monitor = DP-1, 1920x1200, 0x0, 1, transform, 1
- #           ";
+
+    
+
+      };
+    extraConfig = "
+           monitor = , preferred, auto, auto
+           monitor = DP-1, 1920x1200, -1200x0, 1, transform, 1
+           monitor = DP-2, 2560x1440@144, 0x0, 1
+           monitor = DP-3, 1920x1080, 2560x0, 1
+           ";
   };
 }

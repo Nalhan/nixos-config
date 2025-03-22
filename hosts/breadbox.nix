@@ -82,4 +82,19 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  
+
+  ############
+  # PROGRAMS #
+  ############
+
+  programs.steam.enable = true;
+  # programs.vencord.enable = true;
+  # programs.plexamp.enable = true;
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [ "bread" ];
+  };
+  programs.obs-studio.enable = true;
 }
