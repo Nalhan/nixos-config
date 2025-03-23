@@ -1,7 +1,6 @@
 # users/bread.nix
 # defines configuration for this user, can be included on a host config to add the user with all configuration
 # this can manage what programs are available and how they are configured
-
 { pkgs, ...}:
 
 {
@@ -18,6 +17,9 @@
     signal-desktop
     plexamp
     grimblast
+    neofetch
+    bottles-unwrapped
+    kdePackages.dolphin
   ];
 
   

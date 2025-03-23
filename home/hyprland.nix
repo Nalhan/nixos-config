@@ -7,6 +7,10 @@
   programs.fuzzel.enable = true;
   programs.firefox.enable = true;
 
+  imports = [
+    ../home/waybar.nix
+  ]; 
+
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -65,7 +69,8 @@
           "$mod, mouse:272, movewindow"
           "$mod, mouse:273, resizewindow"
         ];
-
+      
+      mouse = {}; 
       };
     extraConfig = "
            monitor = , preferred, auto, auto

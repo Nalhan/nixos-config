@@ -9,7 +9,6 @@
 
   programs = {
 
-
     gh.enable = true; 
   
     eza = {
