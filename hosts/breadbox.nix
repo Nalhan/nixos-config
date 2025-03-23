@@ -41,6 +41,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.kernelParams = [ "module_blacklist=amdgpu" ];
+  boot.supportedFilesystems = [ "ntfs" ];
   
   ###############
   # FILESYSTEMS #
@@ -55,6 +56,12 @@
     { device = "/dev/disk/by-uuid/2C09-3BC6";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
+    };
+  fileSystems."/mnt/gigadisk" = 
+  {
+    device = "/dev/disk/by-uuid/22E600A86FE85315";
+    fsType = "ntfs-3g";
+    options = [ "rw" "uid=1000" ];
     };
 
   swapDevices = [
