@@ -7,6 +7,7 @@
   programs.fuzzel.enable = true;
   programs.firefox.enable = true;
 
+
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
@@ -30,6 +31,8 @@
           "$mod, V, togglefloating"
           "$mod, J, togglesplit"
           "$mod, P, pseudo"
+
+          "CTRL SHIFT, 4, exec, grimblast copy area"
 
           "$mod, left, movefocus, l"
           "$mod, right, movefocus, r"

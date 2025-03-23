@@ -115,5 +115,6 @@
     enable = true;
     polkitPolicyOwners = [ "bread" ];
   };
-  programs.obs-studio.enable = true;
+  #programs.obs-studio.enable = true;
+  #programs.vesktop.enable = true;
 }

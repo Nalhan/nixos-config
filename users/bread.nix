@@ -11,7 +11,16 @@
     description = "Bread";
     extraGroups = [ "networkmanager" "wheel" "audio"];
     shell = pkgs.zsh;
-    };
+  };
+
+  environment.systemPackages = with pkgs; [
+    vesktop
+    signal-desktop
+    plexamp
+    grimblast
+  ];
+
+  
   home-manager = {
     users.bread = {
       imports = [ 
@@ -41,7 +50,9 @@
       # };
       #programs.steam.enable = true;
       #programs.vencord.enable = true;
-     # programs.obs_studio.enable = true;
+      #programs.obs_studio.enable = true;
+      #programs.signal-desktop.enable = true;
+      #programs.vesktop.enable = true;
       home.stateVersion = "24.11";
 
     };
