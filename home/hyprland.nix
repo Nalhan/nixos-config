@@ -8,7 +8,7 @@
   programs.firefox.enable = true;
 
   imports = [
-    ../home/waybar.nix
+    waybar/waybar.nix
   ]; 
 
 
