@@ -1,7 +1,7 @@
 {
   services.swaync = {
     enable = true;
-    style = ../home/swaync/style.css;
+    style = ./style.css;
     settings = {
       positionX = "left";
       positionY = "bottom";
