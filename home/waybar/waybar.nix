@@ -1,72 +1,138 @@
-{ ... }: {
+{ config, lib, pkgs, ... }:
 
+{
   programs.waybar = {
-      enable = true;
-      style = builtins.readFile ../waybar/style.css;
-      settings = [{
+    enable = true;
+    systemd = {
+      enable = false;
+      target = "graphical-session.target";
+    };
+    # Reference the CSS file located in the same directory
+    style = builtins.readFile ./style.css;
+    settings = {
+      mainBar = {
         layer = "top";
         position = "top";
-        mod = "dock";
-        exclusive = true;
-        passtrough = false;
-        gtk-layer-shell = true;
-        height = 0;
-        modules-left = [
-          "hyprland/workspaces"
-          "custom/divider"
-          "cpu"
-          "custom/divider"
-          "memory"
-        ];
-        modules-center = [ "hyprland/window" ];
-        modules-right = [
-          "tray"
-          "custom/divider"
-          "clock"
-        ];
-        "hyprland/window" = { format = "{}"; };
-        "wlr/workspaces" = {
-          on-scroll-up = "hyprctl dispatch workspace e+1";
-          on-scroll-down = "hyprctl dispatch workspace e-1";
-          all-outputs = true;
-          on-click = "activate";
+        reload_style_on_change = true;
+        modules-left = ["custom/notification" "clock" "tray"];
+        modules-center = ["hyprland/workspaces"];
+        modules-right = ["group/expand" "network"];
+
+        "hyprland/workspaces" = {
+          format = "{icon}";
+          format-icons = {
+            active = "";
+            default = "";
+            empty = "";
+          };
+          persistent-workspaces = {
+            "*" = [ 1 2 3 4 5 ];
+          };
         };
-        battery = { format = "󰁹 {}%"; };
-        cpu = {
-          interval = 10;
-          format = "󰻠 {}%";
-          max-length = 10;
-          on-click = "";
-        };
-        memory = {
-          interval = 30;
-          format = "  {}%";
-          format-alt = " {used:0.1f}G";
-          max-length = 10;
-        };
-        tray = {
-          icon-size = 13;
+
+        "custom/notification" = {
           tooltip = false;
+          format = "";
+          on-click = "swaync-client -t -sw";
+          escape = true;
+        };
+
+        "clock" = {
+          format = "{:%I:%M:%S %p} ";
+          interval = 1;
+          tooltip-format = "<tt>{calendar}</tt>";
+          calendar = {
+            format = {
+              today = "<span color='#fAfBfC'><b>{}</b></span>";
+            };
+          };
+          actions = {
+            on-click-right = "shift_down";
+            on-click = "shift_up";
+          };
+        };
+
+        "network" = {
+          format-wifi = "";
+          format-ethernet = "";
+          format-disconnected = "";
+          tooltip-format-disconnected = "Error";
+          tooltip-format-wifi = "{essid} ({signalStrength}%) ";
+          tooltip-format-ethernet = "{ifname} 🖧 ";
+          on-click = "${pkgs.kitty}/bin/kitty ${pkgs.networkmanager}/bin/nmtui";
+        };
+
+        "custom/expand" = {
+          format = "";
+          tooltip = false;
+        };
+
+        "custom/endpoint" = {
+          format = "|";
+          tooltip = false;
+        };
+
+        "group/expand" = {
+          orientation = "horizontal";
+          drawer = {
+            transition-duration = 600;
+            transition-to-left = true;
+            click-to-reveal = true;
+          };
+          modules = ["custom/expand" "custom/colorpicker" "cpu" "memory" "temperature" "custom/endpoint"];
+        };
+
+        "custom/colorpicker" = {
+          format = "{}";
+          return-type = "json";
+          interval = "once";
+          exec = "${config.xdg.configHome}/waybar/scripts/colorpicker.sh -j";
+          on-click = "${config.xdg.configHome}/waybar/scripts/colorpicker.sh";
+          signal = 1;
+        };
+
+        "cpu" = {
+          format = "󰻠";
+          tooltip = true;
+        };
+
+        "memory" = {
+          format = "";
+        };
+
+        "temperature" = {
+          critical-threshold = 80;
+          format = "";
+        };
+
+        "tray" = {
+          icon-size = 14;
           spacing = 10;
         };
-
-        clock = {
-          format = " {:%I:%M %p   %m/%d} ";
-          tooltip-format = ''
-            <big>{:%Y %B}</big>
-            <tt><small>{calendar}</small></tt>'';
-        };
-
-        "custom/divider" = {
-          format = " | ";
-          interval = "once";
-          tooltip = false;
-        };
-        "custom/endright" = {
-          format = "_";
-          interval = "once";
-          tooltip = false;
-        };
-      }];
+      };
     };
+  };
+
+  # Make scripts directory available in the waybar config directory
+  home.file = {
+    "${config.xdg.configHome}/waybar/scripts/colorpicker.sh" = {
+      source = ./scripts/colorpicker.sh;
+      executable = true;
+    };
+  };
+  
+  # Ensure all necessary dependencies are installed for the colorpicker script
+  home.packages = with pkgs; [
+    # For colorpicker script
+    hyprpicker
+    wl-clipboard
+    libnotify
+    bash
+    coreutils  # For head, tail, sed, etc.
+    
+    # For waybar functionality
+    grim
+    slurp
+    pywal      # For the ~/.cache/wal/colors.sh script
+  ];
 }
