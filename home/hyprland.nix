@@ -7,6 +7,10 @@
   programs.fuzzel.enable = true;
   programs.firefox.enable = true;
 
+  imports = 
+  [
+    ../home/swaync/swaync.nix 
+  ];
 
   wayland.windowManager.hyprland = {
     enable = true;
