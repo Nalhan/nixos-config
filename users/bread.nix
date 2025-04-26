@@ -38,7 +38,12 @@
     gamescope
   ];
 
-  
+
+  imports = [
+    (import ../home/darkmode.nix "bread")
+  ];
+
+
   home-manager = {
     users.bread = {
       imports = [ 
