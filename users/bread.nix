@@ -40,7 +40,8 @@
 
 
   imports = [
-   (import ../home/darkmode.nix "bread")
+    (import ../home/darkmode.nix "bread")
+    (import ../home/hyprland.nix "bread")
   ];
 
 
@@ -48,8 +49,8 @@
     users.bread = {
       imports = [ 
 	../home/home.nix 
-	../home/hyprland.nix
-	../home/waybar/waybar.nix
+	#../home/hyprland.nix
+	#../home/waybar/waybar.nix
       ];
       programs.zsh = {
         enable = true;

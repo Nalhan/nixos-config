@@ -13,7 +13,7 @@
       #(modulesPath + "/installer/scan/not-detected.nix"),
       ../configuration.nix
       ../modules/nvidia.nix
-      ../modules/hyprland.nix
+      #../modules/hyprland.nix
       ../users/bread.nix
     ];
   
@@ -83,13 +83,14 @@
   # networking.interfaces.enp8s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp9s0.useDHCP = lib.mkDefault true;
 
+
   ########
   # MISC #
   ########
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  
+   
 
 
   #########
