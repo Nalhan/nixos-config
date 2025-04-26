@@ -11,7 +11,7 @@
     style = builtins.readFile ./style.css;
     settings = {
       mainBar = {
-        output = "DP-2";
+        #output = "DP-2";
         layer = "top";
         position = "top";
         reload_style_on_change = true;
@@ -33,7 +33,7 @@
 
         "custom/notification" = {
           tooltip = false;
-          format = "";
+          format = "";
           on-click = "swaync-client -t -sw";
           escape = true;
         };

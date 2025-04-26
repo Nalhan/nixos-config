@@ -51,8 +51,8 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
         ];
 
         general = {
-          gaps_in = 3;
-          gaps_out = 10;
+          gaps_in = 6;
+          gaps_out = 8;
           border_size = 2;
           #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
           #"col.inactive_border" = "rgba(595959aa)";
@@ -78,7 +78,7 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
           blur = {
             enabled = true;
             size = 8;
-            passes = 1;
+            passes = 2;
 
             vibrancy = 0.1696;
           };
@@ -120,7 +120,7 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
 
         windowrule = 
         [
-          "opacity 0.8 0.8 class:kitty"
+          "opacity 0.8 0.7 class:kitty"
           "opacity 0.9 0.9 title:Plexamp"
         ];
         windowrulev2 = 
@@ -193,14 +193,23 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
           off_window_axis_events = 0;
         };
 
+        monitor = 
+        [
+          ", preferred, auto, auto"
+          ", addreserved, -10, 0, 0, 0"  # trims margin to make top edge closer to waybar
+          "DP-1, 1920x1200, -1200x0, 1, transform, 1"
+          "DP-2, 2560x1440@144, 0x0, 1"
+          "DP-3, 1920x1080, 2560x0, 1"
+        ];
+
       };
 
-      extraConfig = "
-             monitor = , preferred, auto, auto
-             monitor = DP-1, 1920x1200, -1200x0, 1, transform, 1
-             monitor = DP-2, 2560x1440@144, 0x0, 1
-             monitor = DP-3, 1920x1080, 2560x0, 1
-             ";
+#      extraConfig = "
+#             monitor = , preferred, auto, auto
+#             monitor = DP-1, 1920x1200, -1200x0, 1, transform, 1
+#             monitor = DP-2, 2560x1440@144, 0x0, 1
+#             monitor = DP-3, 1920x1080, 2560x0, 1
+#             ";
     };
   
   };
