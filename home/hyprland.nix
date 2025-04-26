@@ -7,10 +7,6 @@
   programs.fuzzel.enable = true;
   programs.firefox.enable = true;
 
-  imports = [
-    waybar/waybar.nix
-  ]; 
-
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -49,8 +45,9 @@
           "$mod, mouse_down, workspace, e+1"
           "$mod, mouse_up, workspace, e-1"
         ]
+        ++
 
-        ++ (
+       (
           # workspaces
           # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
           builtins.concatLists (builtins.genList (i:
@@ -69,9 +66,19 @@
           "$mod, mouse:272, movewindow"
           "$mod, mouse:273, resizewindow"
         ];
-      
-      mouse = {}; 
+        
+      cursor = {
+        no_warps = true;
       };
+
+      input = { 
+        sensitivity = -0.1;
+        follow_mouse = 0;
+        off_window_axis_events = 0;
+      };
+
+    };
+
     extraConfig = "
            monitor = , preferred, auto, auto
            monitor = DP-1, 1920x1200, -1200x0, 1, transform, 1
