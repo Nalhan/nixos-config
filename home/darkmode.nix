@@ -1,7 +1,5 @@
 # Module definition that accepts parameters
-{ config, lib, pkgs, ... }:
-
-username:  # Parameter to specify the user
+username: { config, lib, pkgs, ...}:
 
 {
   home-manager.users.${username} = {
@@ -18,7 +16,7 @@ username:  # Parameter to specify the user
       enable = true;
       theme = {
         name = "Adwaita-dark";
-        package = pkgs.gnome.gnome-themes-extra;
+        package = pkgs.gnome-themes-extra;
       };
     };
 
