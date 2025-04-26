@@ -1,7 +1,7 @@
 # home/hyprland.nix
 # declarative config for hyprland WM
 # include this file to enable it
-username: { config, lib, pkgs, ...}:
+username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
 
 {
   services.xserver = {
@@ -26,6 +26,10 @@ username: { config, lib, pkgs, ...}:
 
     wayland.windowManager.hyprland = {
       enable = true;
+      package = hyprland.packages.${pkgs.system}.hyprland;
+      plugins = [
+        hyprsplit.packages.${pkgs.system}.hyprsplit
+      ];
       settings = {
         "$mod" = "SUPER";
         "$terminal" = "kitty";
@@ -36,13 +40,22 @@ username: { config, lib, pkgs, ...}:
           # ", preferred, auto, auto"
           # "DP-1, 1920x1200, 0x0, 1, transform, 1"
         # ];
+        plugin = {
+          hyprsplit = {
+            num_workspaces = 6;
+          };
+        };
+        exec-once = 
+        [
+          "waybar"
+        ];
 
         general = {
           gaps_in = 3;
           gaps_out = 10;
           border_size = 2;
-          "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-          "col.inactive_border" = "rgba(595959aa)";
+          #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+          #"col.inactive_border" = "rgba(595959aa)";
 
           allow_tearing = false;
           layout = "dwindle";
@@ -59,12 +72,12 @@ username: { config, lib, pkgs, ...}:
             enabled = true;
             range = 4;
             render_power = 3;
-            color = "rgba(1a1a1aee)";
+            #color = "rgba(1a1a1aee)";
           };
 
           blur = {
             enabled = true;
-            size = 3;
+            size = 8;
             passes = 1;
 
             vibrancy = 0.1696;
@@ -105,7 +118,24 @@ username: { config, lib, pkgs, ...}:
             ];
         };
 
-      
+        windowrule = 
+        [
+          "opacity 0.8 0.8 class:kitty"
+          "opacity 0.9 0.9 title:Plexamp"
+        ];
+        windowrulev2 = 
+        [
+          "maxsize 1200 800, title:Plexamp"
+        ];
+
+        layerrule = 
+        [
+          "blur, waybar"
+          "ignorezero, waybar"
+          "ignorealpha 0.5, waybar"
+        ];
+
+        
 
         bind =
           [
@@ -128,8 +158,8 @@ username: { config, lib, pkgs, ...}:
             "$mod, S, togglespecialworkspace, magic"
             "$mod SHIFT, S, movetoworkspace, special:magic"
 
-            "$mod, mouse_down, workspace, e+1"
-            "$mod, mouse_up, workspace, e-1"
+            "$mod, mouse_down, split:workspace, e+1"
+            "$mod, mouse_up, split:workspace, e-1"
           ]
           ++
 
@@ -139,8 +169,8 @@ username: { config, lib, pkgs, ...}:
             builtins.concatLists (builtins.genList (i:
                 let ws = i + 1;
                 in [
-                  "$mod, code:1${toString i}, workspace, ${toString ws}"
-                  "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+                  "$mod, code:1${toString i}, split:workspace, ${toString ws}"
+                  "$mod SHIFT, code:1${toString i}, split:movetoworkspace, ${toString ws}"
                 ]
               )
               9)

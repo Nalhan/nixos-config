@@ -9,24 +9,36 @@
       nixvim.inputs.nixpkgs.follows = "nixpkgs";
       stylix.url = "github:danth/stylix";
       stylix.inputs.stylix.follows = "nixpkgs";
+      hyprland.url = "github:hyprwm/Hyprland";
+      hyprland-plugins = {
+        url = "github:hyprwm/hyprland-plugins";
+        inputs.hyprland.follows = "hyprland";
+      };
+      hyprsplit = {
+        url = "github:shezdy/hyprsplit";
+        inputs.hyprland.follows = "hyprland";
+      };
     };
 
-    outputs = { self, home-manager, nixvim, nixpkgs, stylix }@inputs:
+    outputs = { self, home-manager, nixvim, nixpkgs, stylix, hyprland, hyprland-plugins, hyprsplit}@inputs:
     let
       system = "x86_64-linux";
       specialArgs = inputs // { inherit system; };
       shared-modules = [
         nixvim.nixosModules.nixvim
         stylix.nixosModules.stylix
+        hyprland.nixosModules.default
         home-manager.nixosModules.home-manager
         {
           home-manager = {
             useUserPackages = true;
             backupFileExtension = "backup";
             extraSpecialArgs = specialArgs;
+            useGlobalPkgs = true;
+
             sharedModules = [
               nixvim.homeManagerModules.nixvim
-              stylix.homeManagerModules.stylix
+              hyprland.homeManagerModules.default
             ];
           };
         }
