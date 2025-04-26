@@ -48,7 +48,8 @@
   home-manager = {
     users.bread = {
       imports = [ 
-	../home/home.nix 
+	../home/home.nix
+	../home/stylix.nix
 	#../home/hyprland.nix
 	#../home/waybar/waybar.nix
       ];
