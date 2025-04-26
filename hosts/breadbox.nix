@@ -12,8 +12,7 @@
     [ 
       #(modulesPath + "/installer/scan/not-detected.nix"),
       ../configuration.nix
-      ../modules/nvidia.nix
-      #../modules/hyprland.nix
+      ../modules/hardware/nvidia.nix
       ../users/bread.nix
     ];
   
