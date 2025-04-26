@@ -3,14 +3,15 @@
 {
   programs.waybar = {
     enable = true;
-    systemd = {
-      enable = false;
-      target = "graphical-session.target";
-    };
+    #systemd = {
+    #  enable = false;
+    #  target = "graphical-session.target";
+    #};
     # Reference the CSS file located in the same directory
     style = builtins.readFile ./style.css;
     settings = {
       mainBar = {
+        output = "DP-2";
         layer = "top";
         position = "top";
         reload_style_on_change = true;
@@ -21,9 +22,9 @@
         "hyprland/workspaces" = {
           format = "{icon}";
           format-icons = {
-            active = "";
-            default = "";
-            empty = "";
+            active = "█";
+            default = "";
+            empty = "";
           };
           persistent-workspaces = {
             "*" = [ 1 2 3 4 5 ];
@@ -38,8 +39,8 @@
         };
 
         "clock" = {
-          format = "{:%I:%M:%S %p} ";
-          interval = 1;
+          format = "{:%I:%M%p} ";
+          interval = 20;
           tooltip-format = "<tt>{calendar}</tt>";
           calendar = {
             format = {
@@ -54,16 +55,16 @@
 
         "network" = {
           format-wifi = "";
-          format-ethernet = "";
-          format-disconnected = "";
+          format-ethernet = "";
+          format-disconnected = "";
           tooltip-format-disconnected = "Error";
-          tooltip-format-wifi = "{essid} ({signalStrength}%) ";
+          tooltip-format-wifi = "{essid} ({signalStrength}%)";
           tooltip-format-ethernet = "{ifname} 🖧 ";
           on-click = "${pkgs.kitty}/bin/kitty ${pkgs.networkmanager}/bin/nmtui";
         };
 
         "custom/expand" = {
-          format = "";
+          format = "";
           tooltip = false;
         };
 
@@ -97,12 +98,12 @@
         };
 
         "memory" = {
-          format = "";
+          format = "";
         };
 
         "temperature" = {
           critical-threshold = 80;
-          format = "";
+          format = "";
         };
 
         "tray" = {
@@ -127,12 +128,8 @@
     hyprpicker
     wl-clipboard
     libnotify
-    bash
-    coreutils  # For head, tail, sed, etc.
     
-    # For waybar functionality
     grim
     slurp
-    pywal      # For the ~/.cache/wal/colors.sh script
   ];
 }
