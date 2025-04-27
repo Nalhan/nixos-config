@@ -42,7 +42,7 @@
   imports = [
     #(import ../home/darkmode.nix "bread")
     (import ../home/hyprland.nix "bread")
-    #../home/stylix.nix
+    ../home/stylix.nix
   ];
 
 
