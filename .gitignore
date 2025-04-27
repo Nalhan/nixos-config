@@ -1,1 +1,5 @@
 terminal
+modules/containers/jellyfin/config/.aspnet/DataProtection-Keys
+modules/containers/jellyfin/config/data/data
+modules/containers/jellyfin/config/log
+modules/containers/jellyfin/config/migrations.xml
