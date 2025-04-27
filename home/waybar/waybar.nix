@@ -26,8 +26,12 @@
             default = "";
             empty = "";
           };
+          all-outputs = false;
+          sort-by-number = true;
           persistent-workspaces = {
-            "*" = [ 1 2 3 4 5 ];
+            "DP-1" = [1 2 3];
+            "DP-2" = [7 8 9];
+            "DP-3" = [13 14 15];
           };
         };
 

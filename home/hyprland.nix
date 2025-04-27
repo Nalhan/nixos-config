@@ -47,7 +47,7 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
         };
         exec-once = 
         [
-          "waybar"
+          "waybar" # launch waybar
         ];
 
         general = {
@@ -149,6 +149,7 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
             "$mod, P, pseudo"
 
             "$mod, Print, exec, grimblast copy area"
+            ", Print, exec, grimblast copy output"
 
             "$mod, left, movefocus, l"
             "$mod, right, movefocus, r"
