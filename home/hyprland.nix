@@ -7,12 +7,17 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
   services.xserver = {
     enable = true;
   };
-
+  
   programs.hyprland = {
-    enable = true;
+    enable = true; 
     xwayland.enable = true;
+      
   };
-
+  
+  environment.systemPackages = with pkgs; [
+    gnome-network-displays
+  ];
+ 
   home-manager.users.${username} = {
     programs.kitty.enable = true;
     programs.fuzzel.enable = true;
@@ -45,9 +50,14 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
             num_workspaces = 6;
           };
         };
+
         exec-once = 
         [
-          "waybar" # launch waybar
+          "waybar"
+          "signal-desktop"
+          "vesktop"
+          "firefox --name \"firstff\""
+          "plexamp"
         ];
 
         general = {
@@ -120,12 +130,31 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
 
         windowrule = 
         [
+          # kitty
           "opacity 0.8 0.7 class:kitty"
+
+          # vesktop
+          "workspace 1, class:vesktop"
+
+          # signal
+          "workspace 2, class:Signal"
+
+          
+          # Plexamp
           "opacity 0.9 0.9 title:Plexamp"
+          "float, title:Plexamp"
+          "pin, title:Plexamp"
+          "size 1180 550, title:Plexamp"
+          "move 10 1360, title:Plexamp"
+          "monitor 0, title:Plexamp"
+            
+          # on-boot firefox window
+          "workspace 13, class:^(firstff)$"
+
         ];
         windowrulev2 = 
         [
-          "maxsize 1200 800, title:Plexamp"
+          "maxsize 1180 550, title:Plexamp"
         ];
 
         layerrule = 
@@ -198,6 +227,7 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
         [
           ", preferred, auto, auto"
           ", addreserved, -10, 0, 0, 0"  # trims margin to make top edge closer to waybar
+          "DP-1, addreserved, -10, 560, 0, 0"
           "DP-1, 1920x1200, -1200x0, 1, transform, 1"
           "DP-2, 2560x1440@144, 0x0, 1"
           "DP-3, 1920x1080, 2560x0, 1"
