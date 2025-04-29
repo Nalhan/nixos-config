@@ -56,8 +56,9 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
           "waybar"
           "signal-desktop"
           "vesktop"
-          "firefox --name \"firstff\""
+          "[workspace 13 silent] firefox"
           "plexamp"
+          "[workspace special:magic silent] 1password"
         ];
 
         general = {
@@ -148,8 +149,6 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
           "move 10 1360, title:Plexamp"
           "monitor 0, title:Plexamp"
             
-          # on-boot firefox window
-          "workspace 13, class:^(firstff)$"
 
         ];
         windowrulev2 = 
