@@ -5,7 +5,6 @@
 {
   imports = [
     ./nvim/nvim.nix
-    #./stylix.nix
   ];
 
   programs = {

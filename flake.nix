@@ -8,7 +8,7 @@
       nixvim.url = "github:nix-community/nixvim";
       nixvim.inputs.nixpkgs.follows = "nixpkgs";
       stylix.url = "github:danth/stylix";
-      stylix.inputs.stylix.follows = "nixpkgs";
+      stylix.inputs.nixpkgs.follows = "nixpkgs";
       hyprland.url = "github:hyprwm/Hyprland";
       hyprland-plugins = {
         url = "github:hyprwm/hyprland-plugins";
