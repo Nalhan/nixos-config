@@ -81,7 +81,7 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp8s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp9s0.useDHCP = lib.mkDefault true;
-
+  networking.networkmanager.enable = true;
 
   ########
   # MISC #
