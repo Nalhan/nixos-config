@@ -9,7 +9,7 @@
   nixpkgs.config.allowUnfree = true;
 
   time.timeZone = "America/Los_Angeles";
-  
+
   #programs.nix-ld.enable = true;
 
   services.openssh = {
@@ -27,7 +27,7 @@
   environment.systemPackages = with pkgs; [
     docker
     docker-compose
-    nil # Nix Language Server
+    nixd # Nix Language Server
     mergerfs
     snapraid
     direnv
@@ -40,6 +40,7 @@
     nnn
     usbutils
     _1password-cli
+
 
   ];
 
