@@ -1,23 +1,21 @@
-{ pkgs, ... }: {
+{ self, pkgs, ... }: {
 
   programs.nixvim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
     #colorschemes.oxocarbon.enable = true;
-
     imports = [
       ./keymaps.nix
     ];
-
+    
     globalOpts = {
       number = true;
       relativenumber = true;
-
       signcolumn = "yes";
       splitright = true;
       splitbelow = true;
-
+    
       tabstop = 2;
       shiftwidth = 2;
       softtabstop = 0;
@@ -30,7 +28,6 @@
     
       # Save undo history
       undofile = true;
-
 
       # Highlight the current line for cursor
       cursorline = true;
@@ -114,49 +111,49 @@
         enable = true;
       };
 
-      none-ls = {
-        enable = true;
-        settings = {
-          cmd = ["bash -c nvim"];
-          debug = true;
-        };
-        sources = {
-          code_actions = {
-            statix.enable = true;
-            gitsigns.enable = true;
-          };
-          diagnostics = {
-            statix.enable = true;
-            deadnix.enable = true;
-            pylint.enable = true;
-            checkstyle.enable = true;
-          };
-          formatting = {
-            alejandra.enable = true;
-            stylua.enable = true;
-            shfmt.enable = true;
-            nixpkgs_fmt.enable = true;
-            google_java_format.enable = false;
-            prettier = {
-              enable = true;
-              disableTsServerFormatter = true;
-            };
-            black = {
-              enable = true;
-              settings = ''
-                {
-                  extra_args = { "--fast" },
-                }
-              '';
-
-            };
-          };
-          completion = {
-            luasnip.enable = true;
-            spell.enable = true;
-          };
-        };
-      };
+#      none-ls = {
+#        enable = true;
+#        settings = {
+#          cmd = ["bash -c nvim"];
+#          debug = true;
+#        };
+#        sources = {
+#          code_actions = {
+#            statix.enable = true;
+#            gitsigns.enable = true;
+#          };
+#          diagnostics = {
+#            statix.enable = true;
+#            deadnix.enable = true;
+#            pylint.enable = true;
+#            checkstyle.enable = true;
+#          };
+#          formatting = {
+#            alejandra.enable = true;
+#            stylua.enable = true;
+#            shfmt.enable = true;
+#            nixpkgs_fmt.enable = true;
+#            google_java_format.enable = false;
+#            prettier = {
+#              enable = true;
+#              disableTsServerFormatter = true;
+#            };
+#            black = {
+#              enable = true;
+#              settings = ''
+#                {
+#                  extra_args = { "--fast" },
+#                }
+#              '';
+#
+#            };
+#          };
+#          completion = {
+#            luasnip.enable = true;
+#            spell.enable = true;
+#          };
+#        };
+#      };
 
       # Lazygit
       lazygit = {
@@ -302,7 +299,7 @@
             position = "right";
             right_pad = 2;
             sign = false;
-            width = "block";
+            width = "block";      
           };
           heading = {
             border = true;
@@ -475,25 +472,28 @@
           pyright.enable = true; # Python
           marksman.enable = true; # Markdown
           nixd = {
+            # Nix LS
             enable = true;
-            settings = {
-              nixd = {
-                options = {
-                  enable = true;
-                  target = {
-                    installable = "../../flake.nix";
-                  };
-                  nixPath = [
-                    "home-manager=flake:home-manager"
-                  ];
-                };
-                formatting = {
-                  command = "nixpkgs-fmt";
-                };
+            settings =
+            let
+                flake = ''(builtins.getFlake "${self}")'';
+            in
+            {
+              nixpkgs.expr = "import ${flake}.inputs.nixpkgs { }";
+              options = rec {
+                nixos.expr = "${flake}.nixosConfigurations.breadbox.options";
+                home-manager.expr = "${nixos.expr}.home-manager.users.type.getSubOptions [ ]";
+                nixvim.expr = ''(${nixos.expr}.home-manager.users.type.getSubOptions []).programs.nixvim.type.getSubOptions ["programs" "nixvim" ]'';
+              };
+              eval = {
+                depth = 15;
+                workers = 4;
+              };
+              formatting = {
+                command = ["nixpkgs-fmt"];
               };
             };
           };
-          
 
           dockerls.enable = true; # Docker
           bashls.enable = true; # Bash
@@ -505,18 +505,7 @@
             settings = {
               enabled = [ "astro" "html" "latex" "markdown" "text" "tex" "gitcommit" ];
               completionEnabled = true;
-              language = "en-US de-DE nl";
-              # dictionary = {
-              #   "nl-NL" = [
-              #     ":/home/liv/.local/share/nvim/ltex/nl-NL.txt"
-              #   ];
-              #   "en-US" = [
-              #     ":/home/liv/.local/share/nvim/ltex/en-US.txt"
-              #   ];
-              #   "de-DE" = [
-              #     ":/home/liv/.local/share/nvim/ltex/de-DE.txt"
-              #   ];
-              # };
+              language = "en-US";
             };
           };
           gopls = { # Golang
