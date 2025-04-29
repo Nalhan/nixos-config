@@ -26,6 +26,7 @@
   ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
  
   environment.systemPackages = with pkgs; [
+    pipes
     vesktop
     signal-desktop
     plexamp
@@ -36,6 +37,8 @@
     font-manager
     wl-clipboard
     gamescope
+    obs-studio
+    obsidian
   ];
 
 
@@ -64,7 +67,6 @@
 	userName = "Nathan Park";
 	userEmail = "nalhan.park@gmail.com";
       };
-      
 
 
       #programs.firefox.enable = true;
