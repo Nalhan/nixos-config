@@ -474,7 +474,27 @@
           vuels.enable = false; # Vue
           pyright.enable = true; # Python
           marksman.enable = true; # Markdown
-          nil_ls.enable = true; # Nix
+          nixd = {
+            enable = true;
+            settings = {
+              nixd = {
+                options = {
+                  enable = true;
+                  target = {
+                    installable = "../../flake.nix";
+                  };
+                  nixPath = [
+                    "home-manager=flake:home-manager"
+                  ];
+                };
+                formatting = {
+                  command = "nixpkgs-fmt";
+                };
+              };
+            };
+          };
+          
+
           dockerls.enable = true; # Docker
           bashls.enable = true; # Bash
           clangd.enable = true; # C/C++
