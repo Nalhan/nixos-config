@@ -13,16 +13,18 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
     xwayland.enable = true;
       
   };
-  
+
+
   environment.systemPackages = with pkgs; [
     gnome-network-displays
+    hyprcursor
   ];
- 
+
   home-manager.users.${username} = {
     programs.kitty.enable = true;
     programs.fuzzel.enable = true;
     programs.firefox.enable = true;
-
+    
     imports = 
     [
       ../home/swaync/swaync.nix
@@ -50,6 +52,12 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
             num_workspaces = 6;
           };
         };
+        
+        env = 
+        [
+          "HYPRCURSOR_THEME,Bibata-Modern-Ice"
+          "HYPRCURSOR_SIZE,24"
+        ];
 
         exec-once = 
         [
