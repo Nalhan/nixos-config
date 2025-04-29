@@ -55,7 +55,10 @@
 	#../home/waybar/waybar.nix
       ];
       programs.zsh = {
-        enable = true;
+	enable = true;
+	shellAliases = {
+	  ssh = "kitty +kitten ssh";
+	};
       };
       programs.git = {
 	enable = true;
