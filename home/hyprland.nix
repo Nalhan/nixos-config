@@ -186,6 +186,8 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
 
             "$mod, S, togglespecialworkspace, magic"
             "$mod SHIFT, S, movetoworkspace, special:magic"
+            "$mod, G, togglespecialworkspace, game"
+            "$mod SHIFT, G, movetoworkspace, special:game"
 
             "$mod, mouse_down, split:workspace, e+1"
             "$mod, mouse_up, split:workspace, e-1"
