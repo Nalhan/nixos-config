@@ -38,8 +38,21 @@
     wl-clipboard
     gamescope
     obs-studio
+    davinci-resolve
+    bitwig-studio5-unwrapped
+    gimp
+    rawtherapee
+    openscad
+    freecad-wayland
     obsidian
+    gparted
+    wowup-cf
+    helvum
+    qpwgraph
+    pulseaudio
+    gearlever
   ];
+  
 
 
   imports = [
