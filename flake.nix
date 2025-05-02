@@ -20,10 +20,11 @@
       };
       clipboard-sync.url = "github:dnut/clipboard-sync";
       clipboard-sync.inputs.nixpkgs.follows = "nixpkgs";
-
+      sops-nix.url = "github:Mic92/sops-nix";
+      sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    outputs = { self, home-manager, nixvim, nixpkgs, stylix, hyprland, hyprland-plugins, hyprsplit, clipboard-sync}@inputs:
+    outputs = { self, home-manager, nixvim, nixpkgs, stylix, hyprland, hyprland-plugins, hyprsplit, clipboard-sync, sops-nix}@inputs:
     let
       system = "x86_64-linux";
       specialArgs = inputs // { inherit system; };
@@ -33,6 +34,7 @@
         clipboard-sync.nixosModules.default
         hyprland.nixosModules.default
         home-manager.nixosModules.home-manager
+        sops-nix.nixosModules.sops
         {
           home-manager = {
             useUserPackages = true;

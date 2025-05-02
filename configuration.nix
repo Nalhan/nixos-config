@@ -5,11 +5,16 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    "secrets/sops.nix"  # secret handling
+  ];
+
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
 
   time.timeZone = "America/Los_Angeles";
 
+  # for when you want to do things wrong
   #programs.nix-ld.enable = true;
 
   services.openssh = {
@@ -20,15 +25,13 @@
       };
     };
 
-  # Enable Docker
   virtualisation.docker.enable = true;
 
-  # Install Docker CLI tools, nil, MergerFS, SnapRAID, direnv, and other useful packages
   environment.systemPackages = with pkgs; [
     docker
     docker-compose
-    nixd # Nix Language Server
-    mergerfs
+    nixd # nix language server for editor
+    mergerfs 
     snapraid
     direnv
     git
@@ -44,15 +47,12 @@
 
   ];
 
-  # Enable direnv
-  # programs.direnv = {
-    # enable = true;
-    # nix-direnv.enable = true;
-  # };
 
   # Set Zsh as the default shell system-wide
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
+
+
 
 
 
