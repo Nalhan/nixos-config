@@ -53,6 +53,19 @@
     gearlever
   ];
   
+  # Add a virtual audio sink to use with OBS
+  services.pipewire.extraConfig.pipewire = {
+    "context.modules" = [
+      {
+	name = "libpipewire-module-null-audio-sink";
+	args = {
+	  node.name = "virtual-sink";
+	  media.class = "Audio/Sink";
+	  audio.position = [ "FL" "FR" ];
+	};
+      }
+    ];
+  };
 
 
   imports = [
