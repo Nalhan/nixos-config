@@ -57,11 +57,16 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
   fileSystems."/mnt/gigadisk" = 
-  {
+    {
     device = "/dev/disk/by-uuid/22E600A86FE85315";
     fsType = "ntfs-3g";
     options = [ "rw" "uid=1000" ];
-    };
+  };
+  fileSystems."/mnt/linuxgigadisk" = 
+  {
+    device = "/dev/disk/by-uuid/ea107b30-3d7d-47fc-bcbf-32d26c4e6dc2";
+    fsType = "ext4";
+  };
 
   swapDevices = [
     {

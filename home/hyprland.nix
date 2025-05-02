@@ -6,18 +6,27 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
 {
   services.xserver = {
     enable = true;
+    displayManager.lightdm = {
+      greeters.slick.enable = true;
+      extraConfig = ''
+        display-setup-script=xrandr --output DP-2 --primary
+      '';
+    };
   };
   
   programs.hyprland = {
     enable = true; 
     xwayland.enable = true;
-      
   };
+
+  services.clipboard-sync.enable = true;
+
 
 
   environment.systemPackages = with pkgs; [
     gnome-network-displays
     hyprcursor
+    hyprpolkitagent
   ];
 
   home-manager.users.${username} = {
@@ -33,6 +42,7 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
 
     wayland.windowManager.hyprland = {
       enable = true;
+      systemd.enable = false;
       package = hyprland.packages.${pkgs.system}.hyprland;
       plugins = [
         hyprsplit.packages.${pkgs.system}.hyprsplit
@@ -61,12 +71,15 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
 
         exec-once = 
         [
+          "xrandr --output DP-2 --primary"
           "waybar"
           "signal-desktop"
           "vesktop"
           "[workspace 13 silent] firefox"
+          "[workspace 9 silent] steam"
           "plexamp"
           "[workspace special:magic silent] 1password"
+          "systemctl --user start hyprpolkitagent"
         ];
 
         general = {
@@ -156,6 +169,8 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
           "size 1180 550, title:Plexamp"
           "move 10 1360, title:Plexamp"
           "monitor 0, title:Plexamp"
+
+          #steam-proton - send games to monitor 1
             
 
         ];
@@ -177,9 +192,9 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
           [
             "$mod, Q, exec, $terminal"
             "$mod, SPACE, exec, $menu"
-            "$mod, F, exec, firefox"
+            "$mod, F, fullscreen"
             "$mod, C, killactive"
-            "$mod, M, exit"
+            "$mod ALT SHIFT, M, exit"
             "$mod, V, togglefloating"
             "$mod, J, togglesplit"
             "$mod, P, pseudo"
@@ -199,6 +214,7 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
 
             "$mod, mouse_down, split:workspace, e+1"
             "$mod, mouse_up, split:workspace, e-1"
+            
           ]
           ++
 
@@ -224,12 +240,20 @@ username: { config, lib, pkgs, hyprland, hyprland-plugins, hyprsplit, ...}:
           
         cursor = {
           no_warps = true;
+          no_hardware_cursors = true;
         };
 
         input = { 
-          sensitivity = -0.1;
-          follow_mouse = 0;
+          sensitivity = -0.112;
+          float_switch_override_focus = 0;
+          accel_profile = "flat";
+          mouse_refocus = 1;
+          follow_mouse = 2;
           off_window_axis_events = 0;
+        };
+
+        xwayland = {
+          force_zero_scaling = true;
         };
 
         monitor = 
