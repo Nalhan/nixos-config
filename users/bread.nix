@@ -69,7 +69,6 @@
 
 
   imports = [
-    #(import ../home/darkmode.nix "bread")
     (import ../home/hyprland.nix "bread")
   ];
 
