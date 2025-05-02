@@ -6,7 +6,7 @@
 
 {
   imports = [
-    "secrets/sops.nix"  # secret handling
+    ./secrets/sops.nix  # secret handling
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
