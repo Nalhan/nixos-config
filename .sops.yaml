@@ -1,8 +1,9 @@
 keys:
-  - &pubkey ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPl1FnQ8PwE7rNoXTYS9O0NZGHGOJIf0/N9W6Y9GTXL7 nalhan.park@gmail.com
-
+  - &agepubkey age1lj5fqre9jv5ay3jgrer6y5augd63un03v3url3yc0em4qu9hgphqk0mn84
+  - &sshpubkey ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPl1FnQ8PwE7rNoXTYS9O0NZGHGOJIf0/N9W6Y9GTXL7
 creation_rules:
   - path_regex: secrets/[^/]+|.yaml$
     key_groups:
       - age:
-        - *pubkey
+        - *agepubkey
+        - *sshpubkey

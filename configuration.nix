@@ -43,7 +43,9 @@
     nnn
     usbutils
     _1password-cli
-
+    sops
+    age
+    ssh-to-age
 
   ];
 
