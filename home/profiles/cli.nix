@@ -32,7 +32,10 @@
       syntaxHighlighting.enable = true;
       oh-my-zsh = {
         enable = true;
-        plugins = [ "git" "1password" ];
+        plugins = [
+          "git"
+          "1password"
+        ];
         theme = "robbyrussell";
       };
       shellAliases = {

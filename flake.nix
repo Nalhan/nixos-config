@@ -49,7 +49,8 @@
             sops-nix.nixosModules.sops
             home-manager.nixosModules.home-manager
             hostModule
-          ] ++ extraModules;
+          ]
+          ++ extraModules;
         };
 
       genericBootOverride = bootMode: {
@@ -99,7 +100,8 @@
           };
           modules = [
             ./home
-          ] ++ nixpkgs.lib.optionals desktop [
+          ]
+          ++ nixpkgs.lib.optionals desktop [
             ./home/profiles/desktop.nix
             dms.homeModules.dank-material-shell
           ];
