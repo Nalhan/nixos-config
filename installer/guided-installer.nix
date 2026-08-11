@@ -90,38 +90,94 @@ pkgs.writeShellApplication {
       exit 1
     fi
 
-    mapfile -t disks < <(
-      lsblk --json --output PATH,TYPE,RM,RO \
-        | jq -r '.blockdevices[] | select(.type == "disk" and .rm == false and .ro == false) | .path'
-    )
+    install_strategy=$(gum choose \
+      --header "Select installation target strategy:" \
+      "Whole Disk (Erase entire disk - fresh install)" \
+      "Specific Partition (Install to an existing unused partition - dual boot)")
 
-    if [[ ''${#disks[@]} -eq 0 ]]; then
-      gum style --foreground 196 "No eligible fixed disks were found."
-      exit 1
-    fi
+    if [[ $install_strategy == *"Whole Disk"* ]]; then
+      target_type="whole-disk"
+      mapfile -t disks < <(
+        lsblk --json --output PATH,TYPE,RM,RO \
+          | jq -r '.blockdevices[] | select(.type == "disk" and .rm == false and .ro == false) | .path'
+      )
 
-    choices=()
-    for disk in "''${disks[@]}"; do
-      disk_size=$(lsblk --nodeps --noheadings --raw --output SIZE "$disk" | sed 's/[[:space:]]*$//')
-      disk_model=$(lsblk --nodeps --noheadings --raw --output MODEL "$disk" | sed 's/[[:space:]]*$//')
-      choices+=("$disk | $disk_size | $disk_model")
-    done
+      if [[ ''${#disks[@]} -eq 0 ]]; then
+        gum style --foreground 196 "No eligible fixed disks were found."
+        exit 1
+      fi
 
-    selection=$(printf '%s\n' "''${choices[@]}" \
-      | gum choose --header "Select the disk to erase and install NixOS onto")
-    target_disk=''${selection%% |*}
+      choices=()
+      for disk in "''${disks[@]}"; do
+        disk_size=$(lsblk --nodeps --noheadings --raw --output SIZE "$disk" | sed 's/[[:space:]]*$//')
+        disk_model=$(lsblk --nodeps --noheadings --raw --output MODEL "$disk" | sed 's/[[:space:]]*$//')
+        choices+=("$disk | $disk_size | $disk_model")
+      done
 
-    if [[ -z $target_disk || ! -b $target_disk ]]; then
-      gum style --foreground 196 "The selected disk is not a valid block device."
-      exit 1
-    fi
+      selection=$(printf '%s\n' "''${choices[@]}" \
+        | gum choose --header "Select the disk to erase and install NixOS onto")
+      target_disk=''${selection%% |*}
 
-    gum style --foreground 196 --bold \
-      "ALL DATA ON $target_disk WILL BE PERMANENTLY ERASED."
-    confirmation=$(gum input --prompt "Type $target_disk to continue: ")
-    if [[ $confirmation != "$target_disk" ]]; then
-      echo "Disk confirmation did not match; installation cancelled."
-      exit 1
+      if [[ -z $target_disk || ! -b $target_disk ]]; then
+        gum style --foreground 196 "The selected disk is not a valid block device."
+        exit 1
+      fi
+
+      gum style --foreground 196 --bold \
+        "ALL DATA ON $target_disk WILL BE PERMANENTLY ERASED."
+      confirmation=$(gum input --prompt "Type $target_disk to continue: ")
+      if [[ $confirmation != "$target_disk" ]]; then
+        echo "Disk confirmation did not match; installation cancelled."
+        exit 1
+      fi
+      target_summary="Whole Disk: $target_disk"
+    else
+      target_type="partition"
+      mapfile -t parts < <(
+        lsblk --json --output PATH,TYPE,SIZE,FSTYPE,LABEL,MOUNTPOINT \
+          | jq -r '.. | select(.type? == "part") | "\(.path) | \(.size // "unknown") | \(.fstype // "free/none") | \(.label // "no-label")"'
+      )
+
+      if [[ ''${#parts[@]} -eq 0 ]]; then
+        gum style --foreground 196 "No eligible partitions were found."
+        exit 1
+      fi
+
+      root_part_selection=$(printf '%s\n' "''${parts[@]}" \
+        | gum choose --header "Select partition to format as NixOS root (/):")
+      target_root_partition=''${root_part_selection%% |*}
+
+      if [[ -z $target_root_partition || ! -b $target_root_partition ]]; then
+        gum style --foreground 196 "Invalid root partition selected."
+        exit 1
+      fi
+
+      mapfile -t efi_parts < <(
+        lsblk --json --output PATH,TYPE,SIZE,FSTYPE,LABEL \
+          | jq -r '.. | select(.type? == "part" and (.fstype? == "vfat" or .label? == "ESP" or .label? == "EFI")) | "\(.path) | \(.size // "unknown") | \(.label // "EFI")"'
+      )
+
+      if [[ ''${#efi_parts[@]} -gt 0 ]]; then
+        efi_part_selection=$(printf '%s\n' "''${efi_parts[@]}" \
+          | gum choose --header "Select EFI System Partition to mount at /boot (will NOT be erased):")
+        target_efi_partition=''${efi_part_selection%% |*}
+      else
+        target_efi_selection=$(printf '%s\n' "''${parts[@]}" \
+          | gum choose --header "Select EFI partition to mount at /boot:")
+        target_efi_partition=''${target_efi_selection%% |*}
+      fi
+
+      gum style --foreground 196 --bold \
+        "Target Root Partition $target_root_partition WILL BE ERASED." \
+        "EFI Partition $target_efi_partition WILL BE MOUNTED AT /boot." \
+        "All other partitions on the system will remain UNTOUCHED."
+
+      confirmation=$(gum input --prompt "Type $target_root_partition to continue: ")
+      if [[ $confirmation != "$target_root_partition" ]]; then
+        echo "Partition confirmation did not match; installation cancelled."
+        exit 1
+      fi
+      target_summary="Partition Mode: Root=$target_root_partition (ext4), EFI=$target_efi_partition (preserved)"
     fi
 
     work_dir=$(mktemp -d)
@@ -149,13 +205,37 @@ pkgs.writeShellApplication {
       gpu_summary="Desktop GPU configuration not requested"
     fi
 
-    printf '%s\n' \
-      '{' \
-      "  networking.hostName = \"$hostname\";" \
-      "  nalhan.install.bootMode = \"$boot_mode\";" \
-      "  disko.devices.disk.main.device = \"$target_disk\";" \
-      '}' \
-      > "$work_dir/hosts/$host_configuration/local-installation.nix"
+    if [[ $target_type == "whole-disk" ]]; then
+      printf '%s\n' \
+        '{' \
+        "  networking.hostName = \"$hostname\";" \
+        "  nalhan.install.bootMode = \"$boot_mode\";" \
+        "  disko.devices.disk.main.device = \"$target_disk\";" \
+        '}' \
+        > "$work_dir/hosts/$host_configuration/local-installation.nix"
+    else
+      printf '%s\n' \
+        '{ lib, ... }:' \
+        '{' \
+        "  networking.hostName = \"$hostname\";" \
+        "  nalhan.install.bootMode = \"$boot_mode\";" \
+        '  disko.devices = {' \
+        '    disk.main = lib.mkForce { };' \
+        '    nodev."root" = {' \
+        '      fsType = "ext4";' \
+        '      mountpoint = "/";' \
+        "      device = \"$target_root_partition\";" \
+        '    };' \
+        '    nodev."boot" = {' \
+        '      fsType = "vfat";' \
+        '      mountpoint = "/boot";' \
+        "      device = \"$target_efi_partition\";" \
+        '      mountOptions = [ "umask=0077" ];' \
+        '    };' \
+        '  };' \
+        '}' \
+        > "$work_dir/hosts/$host_configuration/local-installation.nix"
+    fi
 
     host_age_key="$secret_dir/host-age-key.txt"
     bread_age_key="$secret_dir/bread-age-key.txt"
@@ -242,28 +322,43 @@ pkgs.writeShellApplication {
       "Hostname: $hostname" \
       "Profile: $profile" \
       "Boot mode: $boot_summary" \
-      "Target disk: $target_disk" \
+      "Target: $target_summary" \
       "$gpu_summary" \
       "$identity_summary" \
-      "$secrets_summary" \
-      "Filesystem: GPT + BIOS boot + 1 GiB EFI + ext4 root"
+      "$secrets_summary"
 
-    if ! gum confirm "Erase $target_disk and install now?"; then
+    if ! gum confirm "Proceed with installation?"; then
       echo "Installation cancelled."
       exit 1
     fi
 
-    install_args=(
-      --mode format
-      --flake "$work_dir#$host_configuration"
-      --disk main "$target_disk"
-    )
-    if [[ $boot_mode == "uefi" ]]; then
-      install_args+=(--write-efi-boot-entries)
-    fi
-    install_args+=("''${extra_args[@]}")
+    if [[ $target_type == "whole-disk" ]]; then
+      install_args=(
+        --mode format
+        --flake "$work_dir#$host_configuration"
+        --disk main "$target_disk"
+      )
+      if [[ $boot_mode == "uefi" ]]; then
+        install_args+=(--write-efi-boot-entries)
+      fi
+      install_args+=("''${extra_args[@]}")
 
-    ${diskoInstall}/bin/disko-install "''${install_args[@]}"
+      ${diskoInstall}/bin/disko-install "''${install_args[@]}"
+    else
+      gum style --foreground 212 "Formatting target root partition $target_root_partition as ext4..."
+      mkfs.ext4 -F "$target_root_partition"
+
+      install_args=(
+        --mode mount
+        --flake "$work_dir#$host_configuration"
+      )
+      if [[ $boot_mode == "uefi" ]]; then
+        install_args+=(--write-efi-boot-entries)
+      fi
+      install_args+=("''${extra_args[@]}")
+
+      ${diskoInstall}/bin/disko-install "''${install_args[@]}"
+    fi
 
     if [[ -d /mnt/home/bread/src/nixos-config ]]; then
       chown -R 1000:100 /mnt/home/bread
