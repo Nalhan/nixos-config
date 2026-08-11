@@ -1,5 +1,14 @@
 terminal
+*.iso
+hosts/*-generic/facter.json
+hosts/*-generic/hardware-configuration.nix
+hosts/*/local-hardware.nix
+hosts/*/local-installation.nix
 modules/containers/jellyfin/config/.aspnet/DataProtection-Keys
 modules/containers/jellyfin/config/data/data
 modules/containers/jellyfin/config/log
 modules/containers/jellyfin/config/migrations.xml
+result*
+installer-iso*
+*.png
+*.ppm
