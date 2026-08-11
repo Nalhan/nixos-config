@@ -207,8 +207,9 @@ pkgs.writeShellApplication {
 
     if [[ $target_type == "whole-disk" ]]; then
       printf '%s\n' \
+        '{ lib, ... }:' \
         '{' \
-        "  networking.hostName = \"$hostname\";" \
+        "  networking.hostName = lib.mkForce \"$hostname\";" \
         "  nalhan.install.bootMode = \"$boot_mode\";" \
         "  disko.devices.disk.main.device = \"$target_disk\";" \
         '}' \
@@ -217,7 +218,7 @@ pkgs.writeShellApplication {
       printf '%s\n' \
         '{ lib, ... }:' \
         '{' \
-        "  networking.hostName = \"$hostname\";" \
+        "  networking.hostName = lib.mkForce \"$hostname\";" \
         "  nalhan.install.bootMode = \"$boot_mode\";" \
         '  disko.devices = {' \
         '    disk.main = lib.mkForce { };' \
@@ -236,6 +237,8 @@ pkgs.writeShellApplication {
         '}' \
         > "$work_dir/hosts/$host_configuration/local-installation.nix"
     fi
+    git -C "$work_dir" add -f "hosts/$host_configuration/local-installation.nix"
+    git -C "$work_dir" add -f "hosts/$host_configuration/hardware-configuration.nix"
 
     host_age_key="$secret_dir/host-age-key.txt"
     bread_age_key="$secret_dir/bread-age-key.txt"
