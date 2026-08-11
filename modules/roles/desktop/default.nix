@@ -22,6 +22,16 @@
     inputs.zen-browser.packages.${pkgs.system}.generic
   ];
 
+  environment.etc."1password/custom_allowed_browsers" = {
+    text = ''
+      zen
+      zen-beta
+      .zen-wrapped
+      .zen-wrapped-beta
+    '';
+    mode = "0644";
+  };
+
   programs = {
     _1password.enable = true;
     _1password-gui = {
