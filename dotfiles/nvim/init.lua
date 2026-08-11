@@ -26,3 +26,33 @@ vim.opt.scrolloff = 8
 -- Keymaps
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "<leader>e", "<cmd>Explore<CR>", { desc = "File Explorer" })
+
+-- Nix Language Server (nixd) & Auto-formatting (nixfmt)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "nix",
+  callback = function(ev)
+    vim.lsp.start({
+      name = "nixd",
+      cmd = { "nixd" },
+      root_dir = vim.fs.root(ev.buf, { "flake.nix", ".git" }),
+      settings = {
+        nixd = {
+          formatting = {
+            command = { "nixfmt" },
+          },
+          options = {
+            nixos = {
+              expr = '(builtins.getFlake "' .. (vim.fs.root(ev.buf, { "flake.nix" }) or ".") .. '").nixosConfigurations.cli-generic.options',
+            },
+          },
+        },
+      },
+    })
+
+    -- LSP Keybindings
+    local opts = { buffer = ev.buf }
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format({ async = true }) end, opts)
+  end,
+})
