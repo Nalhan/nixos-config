@@ -15,6 +15,13 @@
 
     gh.enable = true;
 
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
+    };
+
     zsh = {
       enable = true;
       enableCompletion = true;
@@ -31,4 +38,8 @@
       };
     };
   };
+
+  # Symlink dotfiles/nvim to ~/.config/nvim so your Lua configuration
+  # can be edited live or managed as a submodule for non-Nix hosts.
+  xdg.configFile."nvim".source = ../../dotfiles/nvim;
 }
