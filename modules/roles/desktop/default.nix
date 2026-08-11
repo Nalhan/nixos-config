@@ -14,12 +14,12 @@
 
   environment.systemPackages = with pkgs; [
     _1password-cli
-    firefox
     kdePackages.dolphin
     kitty
     signal-desktop
     vesktop
     wl-clipboard
+    inputs.zen-browser.packages.${pkgs.system}.generic
   ];
 
   programs = {
@@ -27,6 +27,13 @@
     _1password-gui = {
       enable = true;
       polkitPolicyOwners = [ "bread" ];
+    };
+
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
     };
   };
 

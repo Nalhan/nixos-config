@@ -5,7 +5,21 @@
     systemd.enable = true;
   };
 
-  xdg.configFile."niri/config.kdl".source = ../../dotfiles/niri/config.kdl;
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "text/html" = "zen.desktop";
+      "x-scheme-handler/http" = "zen.desktop";
+      "x-scheme-handler/https" = "zen.desktop";
+      "x-scheme-handler/about" = "zen.desktop";
+      "x-scheme-handler/unknown" = "zen.desktop";
+    };
+  };
+
+  home.sessionVariables = {
+    DEFAULT_BROWSER = "${pkgs.writeShellScriptBin "zen" "exec zen \"$@\""}/bin/zen";
+    BROWSER = "zen";
+  };
 
   home.packages = with pkgs; [
     grim

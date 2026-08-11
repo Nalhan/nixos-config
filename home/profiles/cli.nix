@@ -49,8 +49,14 @@
   # can be edited live or managed as a submodule for non-Nix hosts.
   xdg.configFile."nvim".source = ../../dotfiles/nvim;
 
+  home.sessionPath = [
+    "$HOME/.npm-global/bin"
+    "$HOME/.local/bin"
+  ];
+
   home.packages = with pkgs; [
     nixd
     nixfmt-rfc-style
+    nodejs
   ];
 }
