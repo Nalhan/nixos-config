@@ -348,6 +348,11 @@ pkgs.writeShellApplication {
       gum style --foreground 212 "Formatting target root partition $target_root_partition as ext4..."
       mkfs.ext4 -F "$target_root_partition"
 
+      if ! blkid -s TYPE -o value "$target_efi_partition" | grep -qi 'vfat'; then
+        gum style --foreground 212 "Formatting target EFI partition $target_efi_partition as FAT32..."
+        mkfs.vfat -F 32 "$target_efi_partition"
+      fi
+
       install_args=(
         --mode mount
         --flake "$work_dir#$host_configuration"
